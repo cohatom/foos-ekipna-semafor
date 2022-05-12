@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+    <title>BACKEND</title>
+    <link rel="stylesheet" href="nicepage.css" media="screen">
+    <link rel="stylesheet" href="backend.css" media="screen">
+    <script src="jquery-1.12.4.js"></script>
+    <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
+    <meta name="generator" content="Nicepage 4.9.1, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+    
+    
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": "",
+		"url": "/"
+}</script>
+    <meta name="theme-color" content="#478ac9">
+    <meta property="og:title" content="BACKEND">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="/">
+
+<!-- TIMER -->
+<script>
+  var CCOUNT;
+  $(document).ready(function () {
+      $('#btnct').click(function () {
+          CCOUNT = $('#seconds').val();
+          cdreset();
+      });
+  });
+  var t, count;
+
+  function fmtMSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
+
+  function cddisplay() {
+     frontend.document.getElementById('timespan').innerHTML = fmtMSS(count);
+     document.getElementById('backendTimespan').innerHTML = fmtMSS(count);
+  }
+  
+  function countdown() {
+      // starts countdown
+      cddisplay();
+      if (count === 0) {
+          // time is up
+      } else {
+          count--;
+          t = setTimeout(countdown, 1000);
+      }
+  }
+  
+  function cdpause() {
+      // pauses countdown
+      clearTimeout(t);
+  }
+  
+  function cdreset() {
+      // resets countdown
+      cdpause();
+      count = CCOUNT;
+      cddisplay();
+  }
+  
+
+  //<!-- POINTS COUNTER -->
+
+  function increment1() {
+     frontend.document.getElementById('displayRezultatEkipa1').stepUp();
+     document.getElementById('bRezultatEkipa1').stepUp();
+  }
+  function decrement1() {
+     frontend.document.getElementById('displayRezultatEkipa1').stepDown();
+     document.getElementById('bRezultatEkipa1').stepDown();
+  }
+  function reset1() {
+   let confirmAction = confirm("ŽELIŠ POBRISATI REZULTAT?");
+   if (confirmAction) {
+     frontend.document.getElementById('displayRezultatEkipa1').value = '0';
+     document.getElementById('bRezultatEkipa1').value = '0';
+   } else {
+         alert("Mjaw Mjaw Mjaw");
+ }
+}
+
+
+
+  function increment2() {
+     frontend.document.getElementById('displayRezultatEkipa2').stepUp();
+     document.getElementById('bRezultatEkipa2').stepUp();
+  }
+  function decrement2() {
+     frontend.document.getElementById('displayRezultatEkipa2').stepDown();
+     document.getElementById('bRezultatEkipa2').stepDown();
+  }
+  
+  function reset2() {
+   let confirmAction = confirm("ŽELIŠ POBRISATI REZULTAT?");
+   if (confirmAction) {
+     frontend.document.getElementById('displayRezultatEkipa2').value = '0';
+     document.getElementById('bRezultatEkipa2').value = '0';
+   } else {
+         alert("Mjaw Mjaw Mjaw");
+ }
+}
+
+//<!-- VPIS EKIPE -->
+
+function vpisiEkipo1() {
+ var name = document.getElementById('imeEkipe1').value;
+ document.getElementById('displayImeEkipe1').innerHTML = name;
+ frontend.document.getElementById('displayImeEkipe1').innerHTML = name;
+ 
+}
+
+function vpisiEkipo2() {
+ var name = document.getElementById('imeEkipe2').value;
+ document.getElementById('displayImeEkipe2').innerHTML = name;
+ frontend.document.getElementById('displayImeEkipe2').innerHTML = name;
+ 
+}
+
+
+//<!-- VPIS IGRALCEV EKIPA1 -->
+
+  function vpisiIgralca11() {
+    var name = document.getElementById('imeIgralca11').value;
+    document.getElementById('displayIgralca11').innerHTML = name;
+    frontend.document.getElementById('displayIgralca11').innerHTML = name;
+    
+  }
+  
+  function vpisiIgralca12() {
+    var name = document.getElementById('imeIgralca12').value;
+    document.getElementById('displayIgralca12').innerHTML = name;
+    frontend.document.getElementById('displayIgralca12').innerHTML = name;
+    
+  }
+
+
+//<!-- VPIS IGRALCEV EKIPA2 -->
+
+  function vpisiIgralca21() {
+    var name = document.getElementById('imeIgralca21').value;
+    document.getElementById('displayIgralca21').innerHTML = name;
+    frontend.document.getElementById('displayIgralca21').innerHTML = name;
+    
+  }
+  
+  function vpisiIgralca22() {
+    var name = document.getElementById('imeIgralca22').value;
+    document.getElementById('displayIgralca22').innerHTML = name;
+    frontend.document.getElementById('displayIgralca22').innerHTML = name;
+    
+  }
+
+//<!-- TIMEOUTI -->
+function timeout1Ekipa1() {
+  frontend.document.getElementById('ekipa1Timeout1').style.backgroundColor="red";
+  document.getElementById('btnEkipa1Timeout1').style.backgroundColor="red";
+}
+
+function timeout2Ekipa1() {
+  frontend.document.getElementById('ekipa1Timeout2').style.backgroundColor="red";
+  document.getElementById('btnEkipa1Timeout2').style.backgroundColor="red";
+}
+
+function timeout1Ekipa2() {
+  frontend.document.getElementById('ekipa2Timeout1').style.backgroundColor="red";
+  document.getElementById('btnEkipa2Timeout1').style.backgroundColor="red";
+}
+
+function timeout2Ekipa2() {
+  frontend.document.getElementById('ekipa2Timeout2').style.backgroundColor="red";
+  document.getElementById('btnEkipa2Timeout2').style.backgroundColor="red";
+}
+
+function resetTimeoutEkipa1() {
+  frontend.document.getElementById('ekipa1Timeout1').style.backgroundColor="greenyellow";
+  frontend.document.getElementById('ekipa1Timeout2').style.backgroundColor="greenyellow";
+  document.getElementById('btnEkipa1Timeout1').style.backgroundColor="greenyellow";
+  document.getElementById('btnEkipa1Timeout2').style.backgroundColor="greenyellow";
+}
+
+function resetTimeoutEkipa2() {
+  frontend.document.getElementById('ekipa2Timeout1').style.backgroundColor="greenyellow";
+  frontend.document.getElementById('ekipa2Timeout2').style.backgroundColor="greenyellow";
+  document.getElementById('btnEkipa2Timeout1').style.backgroundColor="greenyellow";
+  document.getElementById('btnEkipa2Timeout2').style.backgroundColor="greenyellow";
+}
+
+
+//<!-- POCISTI CEL SEMAFOR -->
+
+ function semaforReset() {
+   let confirmAction = confirm("Are you sure to execute this action?");
+   if (confirmAction) {
+   frontend.document.getElementById('displayRezultatEkipa1').value = '0';
+   document.getElementById('bRezultatEkipa1').value = '0';
+   frontend.document.getElementById('displayRezultatEkipa2').value = '0';
+   document.getElementById('bRezultatEkipa2').value = '0';
+   document.getElementById('displayIgralca11').innerHTML = '';
+   frontend.document.getElementById('displayIgralca11').innerHTML = '';
+   document.getElementById('displayIgralca12').innerHTML = '';
+   frontend.document.getElementById('displayIgralca12').innerHTML = '';
+   document.getElementById('displayIgralca21').innerHTML = '';
+   frontend.document.getElementById('displayIgralca21').innerHTML = '';
+   document.getElementById('displayIgralca22').innerHTML = '';
+   frontend.document.getElementById('displayIgralca22').innerHTML = '';
+   document.getElementById('displayImeEkipe1').innerHTML = '';
+   frontend.document.getElementById('displayImeEkipe1').innerHTML = '';
+   document.getElementById('displayImeEkipe2').innerHTML = '';
+   frontend.document.getElementById('displayImeEkipe2').innerHTML = '';
+   // resets countdown
+   cdreset();
+   resetTimeoutEkipa1();
+   resetTimeoutEkipa2();
+
+     } else {
+         alert("Action canceled");
+ }
+}
+</script> 
+<style>
+.tockePlusMinus {
+  padding: 5px 30px;
+}
+
+.btnTimeout {
+  background-color: yellowgreen;
+}
+
+.backendRezultat {
+  border:none;
+  width:50%;
+  font-size:xx-large;
+}
+
+</style>
+
+  </head>
+  <body data-home-page-title="BACKEND" class="u-body u-xl-mode">
+    <section class="u-clearfix u-section-1" id="sec-606e">
+      <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
+        <div class="u-layout">
+          <div class="u-layout-col">
+            <div class="u-size-30">
+              <div class="u-layout-row">
+                <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-1">
+                  <div class="u-container-layout u-container-layout-1">
+                    <p class="u-text u-text-default u-text-1">
+                      <!-- TOCKE CONTROL PANEL EKIPA1-->
+                      <hr>
+                      <h1><div id="displayImeEkipe1"></div><h1>
+                      <h3>TOCKE:</h3>
+                      <input class="backendRezultat" id=bRezultatEkipa1 style="border:none;width:50%;" type=number value=0 min=0 max=110>
+                      <br>
+                      <button class="tockePlusMinus" onclick="increment1()">+</button>
+                      <button class="tockePlusMinus" onclick="decrement1()">-</button>
+                      <button style="float: right;" onclick="reset1()">Reset tock</button>
+                      <br><br><br>
+                      
+                      <!-- IME EKIPE CONTROL PANEL -->
+                      <form id="vpisEkipa1">
+                         <label>Ime Ekipe 1: </label><br>
+                         <input type="text" id="imeEkipe1" required>
+                         <button type="button" onclick="vpisiEkipo1()">Vpisi</button>
+                      <form>
+                      <br><br>
+                      
+                                              
+                      <!-- IGRALCI CONTROL PANEL EKIPA1 -->
+                      <form id="vpisIgralca11">
+                         <label>Ime Igralca 1: </label><br>
+                         <input type="text" id="imeIgralca11" required>
+                         <button type="button" onclick="vpisiIgralca11()">Vpisi</button>
+                      </form>
+                      <div id="displayIgralca11"></div>
+                      
+                      <form id="vpisIgralca12">
+                         <label>Ime Igralca 2: </label><br>
+                         <input type="text" id="imeIgralca12" required>
+                         <button type="button" onclick="vpisiIgralca12()">Vpisi</button>
+                      </form>
+                      <div id="displayIgralca12"></div>
+                      <br>
+                      <button class="btnTimeout" id="btnEkipa1Timeout1" type="button" onclick="timeout1Ekipa1()">TIMEOUT 1</button>
+                      <button class="btnTimeout" id="btnEkipa1Timeout2" type="button" onclick="timeout2Ekipa1()">TIMEOUT 2</button>
+                      <button style="float: right;" type="button" onclick="resetTimeoutEkipa1()">Resetiraj Timeoute</button>
+                      <hr></p>
+                  </div>
+                </div>
+                <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
+                  <div class="u-container-layout u-container-layout-2">
+                    <p class="u-text u-text-default u-text-2">
+                      <!-- TOCKE CONTROL PANEL EKIPA2-->
+                      <hr>
+                      <h1><div id="displayImeEkipe2"></div><h1>
+                      <h3>TOCKE:</h3>
+                      <input class="backendRezultat" id=bRezultatEkipa2 style="border:none;width:50%;" type=number value=0 min=0 max=110>
+                      <br>
+                      <button class="tockePlusMinus" onclick="increment2()">+</button>
+                      <button class="tockePlusMinus" onclick="decrement2()">-</button>
+                      <button style="float: right;" onclick="reset2()">Reset tock</button>
+                      <br><br><br>
+                      
+                      <!-- IME EKIPE CONTROL PANEL -->
+                      <form id="vpisEkipa2">
+                         <label>Ime Ekipe 2: </label><br>
+                         <input type="text" id="imeEkipe2" required>
+                         <button type="button" onclick="vpisiEkipo2()">Vpisi</button>
+                       </form>
+                       <div id="displayImeEkipe2"></div>
+                      
+                       <br>
+                      
+                       <!-- IGRALCI CONTROL PANEL EKIPA2 -->
+                      <form id="vpisIgralca21">
+                         <label>Ime Igralca 1: </label><br>
+                         <input type="text" id="imeIgralca21" required>
+                         <button type="button" onclick="vpisiIgralca21()">Vpisi</button>
+                      </form>
+                      <div id="displayIgralca21"></div>
+                      
+                      <form id="vpisIgralca22">
+                         <label>Ime Igralca 2: </label><br>
+                         <input type="text" id="imeIgralca22" required>
+                         <button type="button" onclick="vpisiIgralca22()">Vpisi</button>
+                      </form>
+                      <div id="displayIgralca22"></div>
+                      <br>
+                      <button class="btnTimeout" id="btnEkipa2Timeout1" type="button" onclick="timeout1Ekipa2()">TIMEOUT 1</button>
+                      <button class="btnTimeout" id="btnEkipa2Timeout2" type="button" onclick="timeout2Ekipa2()">TIMEOUT 2</button>
+                      <button style="float: right;" type="button" onclick="resetTimeoutEkipa2()">Resetiraj Timeoute</button>
+                      <hr></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="u-size-30">
+              <div class="u-layout-row">
+                <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-3">
+                  <div class="u-container-layout u-container-layout-3">
+                    <p class="u-text u-text-default u-text-3">
+                      <!-- TIMER -->
+                      <h3>Stoparica</h3>
+                      Current time:<div id="backendTimespan"></div>
+                      <input type="button" value="Start" onclick="countdown()">
+                      <input type="button" value="Stop" onclick="cdpause()">
+                      <input type="button" value="Reset" onclick="cdreset()">
+                      <input type="button" id="btnct" value="Input" />
+                      <br><br>
+                      <form id="frm">Seconds:
+                         <input type="text" id="seconds" name="seconds" value="270" size="3" maxlength="3" />
+                         <br/>
+                      </form></p>
+                  </div>
+                </div>
+                <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-4">
+                  <div class="u-container-layout u-container-layout-4">
+                    <p class="u-text u-text-default u-text-4">
+                      <!-- OPEN SEMAFOR -->
+                      <h3>Semafor</h3>
+                      <button onclick="frontend = window.open('frontend.html','height=200,width=200')"> ODPRI SEMAFOR </button>
+                      <button onclick="semaforReset()"> POČISTI SEMAFOR </button>
+                      <br><br>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+   </body>
+</html>
