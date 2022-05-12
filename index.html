@@ -28,7 +28,27 @@
 
 <!-- TIMER -->
 <script>
-  var CCOUNT;
+  let frontend;
+  let CCOUNT;
+  let data = [
+    {
+      name: "",
+      points: 0,
+      player1: "",
+      player2: "",
+      timeout1: false,
+      timeout2: false
+    },
+    {
+      name: "",
+      points: 0,
+      player1: "",
+      player2: "",
+      timeout1: false,
+      timeout2: false
+    }
+  ]
+
   $(document).ready(function () {
       $('#btnct').click(function () {
           CCOUNT = $('#seconds').val();
@@ -40,8 +60,11 @@
   function fmtMSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
 
   function cddisplay() {
-     frontend.document.getElementById('timespan').innerHTML = fmtMSS(count);
-     document.getElementById('backendTimespan').innerHTML = fmtMSS(count);
+    if (frontend && frontend.document) {
+      frontend.document.getElementById('timespan').innerHTML = fmtMSS(count);
+    }
+    
+    document.getElementById('backendTimespan').innerHTML = fmtMSS(count);
   }
   
   function countdown() {
@@ -69,162 +92,176 @@
   
 
   //<!-- POINTS COUNTER -->
+  function updatePoints(ekipa, increase) {
+    data[ekipa - 1] = {
+      ...data[ekipa - 1],
+      points: Math.max(data[ekipa - 1].points + (increase ? 1 : -1), 0)
+    }
 
-  function increment1() {
-     frontend.document.getElementById('displayRezultatEkipa1').stepUp();
-     document.getElementById('bRezultatEkipa1').stepUp();
-  }
-  function decrement1() {
-     frontend.document.getElementById('displayRezultatEkipa1').stepDown();
-     document.getElementById('bRezultatEkipa1').stepDown();
-  }
-  function reset1() {
-   let confirmAction = confirm("ŽELIŠ POBRISATI REZULTAT?");
-   if (confirmAction) {
-     frontend.document.getElementById('displayRezultatEkipa1').value = '0';
-     document.getElementById('bRezultatEkipa1').value = '0';
-   } else {
-         alert("Mjaw Mjaw Mjaw");
- }
-}
-
-
-
-  function increment2() {
-     frontend.document.getElementById('displayRezultatEkipa2').stepUp();
-     document.getElementById('bRezultatEkipa2').stepUp();
-  }
-  function decrement2() {
-     frontend.document.getElementById('displayRezultatEkipa2').stepDown();
-     document.getElementById('bRezultatEkipa2').stepDown();
+    refreshUI();
   }
   
-  function reset2() {
-   let confirmAction = confirm("ŽELIŠ POBRISATI REZULTAT?");
-   if (confirmAction) {
-     frontend.document.getElementById('displayRezultatEkipa2').value = '0';
-     document.getElementById('bRezultatEkipa2').value = '0';
-   } else {
-         alert("Mjaw Mjaw Mjaw");
- }
-}
-
-//<!-- VPIS EKIPE -->
-
-function vpisiEkipo1() {
- var name = document.getElementById('imeEkipe1').value;
- document.getElementById('displayImeEkipe1').innerHTML = name;
- frontend.document.getElementById('displayImeEkipe1').innerHTML = name;
- 
-}
-
-function vpisiEkipo2() {
- var name = document.getElementById('imeEkipe2').value;
- document.getElementById('displayImeEkipe2').innerHTML = name;
- frontend.document.getElementById('displayImeEkipe2').innerHTML = name;
- 
-}
-
-
-//<!-- VPIS IGRALCEV EKIPA1 -->
-
-  function vpisiIgralca11() {
-    var name = document.getElementById('imeIgralca11').value;
-    document.getElementById('displayIgralca11').innerHTML = name;
-    frontend.document.getElementById('displayIgralca11').innerHTML = name;
-    
-  }
-  
-  function vpisiIgralca12() {
-    var name = document.getElementById('imeIgralca12').value;
-    document.getElementById('displayIgralca12').innerHTML = name;
-    frontend.document.getElementById('displayIgralca12').innerHTML = name;
-    
+  function reset(ekipa) {
+    let confirmAction = confirm("ŽELIŠ POBRISATI REZULTAT?");
+    if (confirmAction) {
+      data[ekipa - 1].points = 0;
+      refreshUI();
+    } else {
+      alert("Mjaw Mjaw Mjaw");
+    }
   }
 
-
-//<!-- VPIS IGRALCEV EKIPA2 -->
-
-  function vpisiIgralca21() {
-    var name = document.getElementById('imeIgralca21').value;
-    document.getElementById('displayIgralca21').innerHTML = name;
-    frontend.document.getElementById('displayIgralca21').innerHTML = name;
-    
-  }
-  
-  function vpisiIgralca22() {
-    var name = document.getElementById('imeIgralca22').value;
-    document.getElementById('displayIgralca22').innerHTML = name;
-    frontend.document.getElementById('displayIgralca22').innerHTML = name;
-    
+  //<!-- VPIS EKIPE -->
+  function vpisiEkipo(ekipa) {
+    data[ekipa - 1].name = document.getElementById(`imeEkipe${ekipa}`).value;
+    refreshUI();
   }
 
-//<!-- TIMEOUTI -->
-function timeout1Ekipa1() {
-  frontend.document.getElementById('ekipa1Timeout1').style.backgroundColor="red";
-  document.getElementById('btnEkipa1Timeout1').style.backgroundColor="red";
-}
+  //<!-- VPIS IGRALCEV -->
+  function vpisiIgralca(ekipa, index) {
+    data[ekipa - 1][`player${index}`] = document.getElementById(`imeIgralca${ekipa}${index}`).value;
+    refreshUI();
+  }
 
-function timeout2Ekipa1() {
-  frontend.document.getElementById('ekipa1Timeout2').style.backgroundColor="red";
-  document.getElementById('btnEkipa1Timeout2').style.backgroundColor="red";
-}
+  //<!-- TIMEOUTI -->
+  function timeoutEkipa(ekipa, timeout) {
+    data[ekipa - 1][`timeout${timeout}`] = true;
+    refreshUI();
+  }
 
-function timeout1Ekipa2() {
-  frontend.document.getElementById('ekipa2Timeout1').style.backgroundColor="red";
-  document.getElementById('btnEkipa2Timeout1').style.backgroundColor="red";
-}
+  function resetTimeoutEkipa(ekipa) {
+    data[ekipa - 1] = {
+      ...data[ekipa - 1],
+      timeout1: false,
+      timeout2: false
+    }
 
-function timeout2Ekipa2() {
-  frontend.document.getElementById('ekipa2Timeout2').style.backgroundColor="red";
-  document.getElementById('btnEkipa2Timeout2').style.backgroundColor="red";
-}
+    refreshUI();
+  }
 
-function resetTimeoutEkipa1() {
-  frontend.document.getElementById('ekipa1Timeout1').style.backgroundColor="greenyellow";
-  frontend.document.getElementById('ekipa1Timeout2').style.backgroundColor="greenyellow";
-  document.getElementById('btnEkipa1Timeout1').style.backgroundColor="greenyellow";
-  document.getElementById('btnEkipa1Timeout2').style.backgroundColor="greenyellow";
-}
+  //<!-- POCISTI CEL SEMAFOR -->
+  function semaforReset() {
+    let confirmAction = confirm("Are you sure to execute this action?");
+    if (confirmAction) {
+      data = [
+        {
+          name: "",
+          points: 0,
+          player1: "",
+          player2: "",
+          timeout1: false,
+          timeout2: false
+        },
+        {
+          name: "",
+          points: 0,
+          player1: "",
+          player2: "",
+          timeout1: false,
+          timeout2: false
+        }
+      ];
+      
+      // resets countdown
+      cdreset();
+      
+      refreshUI();
+    } else {
+      alert("Action canceled");
+    }
+  }
 
-function resetTimeoutEkipa2() {
-  frontend.document.getElementById('ekipa2Timeout1').style.backgroundColor="greenyellow";
-  frontend.document.getElementById('ekipa2Timeout2').style.backgroundColor="greenyellow";
-  document.getElementById('btnEkipa2Timeout1').style.backgroundColor="greenyellow";
-  document.getElementById('btnEkipa2Timeout2').style.backgroundColor="greenyellow";
-}
+  // Shrani rezultate
+  function saveData() {
+    localStorage.setItem("semafor_data", JSON.stringify(data));
+    localStorage.setItem("semafor_count", count);
+    localStorage.setItem("semafor_CCOUNT", CCOUNT);
+  }
+
+  function loadData() {
+    const confirmAction = confirm("Are you sure to load saved data?");
+    if (confirmAction) {
+      const storageData = JSON.parse(localStorage.getItem("semafor_data"));
+      const storageCount = localStorage.getItem("semafor_count");
+      const storageCCOUNT = localStorage.getItem("semafor_CCOUNT");
+
+      if (storageData) {
+        data = storageData;
+      } else {
+        alert("No saved data!");
+      }
+
+      if (storageCount) {
+        count = Number(storageCount);
+      }
+
+      if (storageCCOUNT) {
+        CCOUNT = Number(storageCCOUNT);
+      }
+
+      refreshUI();
+    }
+  }
+
+  function deleteData() {
+    const confirmAction = confirm("Are you sure to delete saved data?");
+    if (confirmAction) {
+      localStorage.clear();
+    }
+  }
+
+  // Update UI
+  function refreshUI() {
+    // Update scores
+    if (frontend && frontend.document) {
+      frontend.document.getElementById(`displayRezultatEkipa1`).value = `${data[0].points}`;
+      frontend.document.getElementById(`displayRezultatEkipa2`).value = `${data[1].points}`;
+    }
+
+    document.getElementById(`bRezultatEkipa1`).value = `${data[0].points}`;
+    document.getElementById(`bRezultatEkipa2`).value = `${data[1].points}`;
+
+    // Update timeouts
+    if (frontend && frontend.document) {
+      frontend.document.getElementById(`ekipa1Timeout1`).style.backgroundColor = data[0].timeout1 ? "red" : "greenyellow";
+      frontend.document.getElementById(`ekipa1Timeout2`).style.backgroundColor = data[0].timeout2 ? "red" : "greenyellow";
+      frontend.document.getElementById(`ekipa2Timeout1`).style.backgroundColor = data[1].timeout1 ? "red" : "greenyellow";
+      frontend.document.getElementById(`ekipa2Timeout2`).style.backgroundColor = data[1].timeout2 ? "red" : "greenyellow";
+    }
+
+    document.getElementById(`btnEkipa1Timeout1`).style.backgroundColor = data[0].timeout1 ? "red" : "greenyellow";
+    document.getElementById(`btnEkipa1Timeout2`).style.backgroundColor = data[0].timeout2 ? "red" : "greenyellow";
+    document.getElementById(`btnEkipa2Timeout1`).style.backgroundColor = data[1].timeout1 ? "red" : "greenyellow";
+    document.getElementById(`btnEkipa2Timeout2`).style.backgroundColor = data[1].timeout2 ? "red" : "greenyellow";
+
+    // Update teams
+    if (frontend && frontend.document) {
+      frontend.document.getElementById(`displayImeEkipe1`).innerHTML = data[0].name;
+      frontend.document.getElementById(`displayIgralca11`).innerHTML = data[0].player1; 
+      frontend.document.getElementById(`displayIgralca12`).innerHTML = data[0].player2; 
+      frontend.document.getElementById(`displayImeEkipe2`).innerHTML = data[1].name;
+      frontend.document.getElementById(`displayIgralca21`).innerHTML = data[1].player1;
+      frontend.document.getElementById(`displayIgralca22`).innerHTML = data[1].player2;
+    }
+
+    document.getElementById(`displayImeEkipe1`).innerHTML = data[0].name;
+    document.getElementById(`displayIgralca11`).innerHTML = data[0].player1; 
+    document.getElementById(`displayIgralca12`).innerHTML = data[0].player2; 
+    document.getElementById(`displayImeEkipe2`).innerHTML = data[1].name;
+    document.getElementById(`displayIgralca21`).innerHTML = data[1].player1;
+    document.getElementById(`displayIgralca22`).innerHTML = data[1].player2;
+
+    // Counter
+    cddisplay();
+  }
+
+  // Open score window
+  function openScoreWindow() {
+    frontend = window.open('frontend.html','height=200,width=200')
+    frontend.addEventListener("load", refreshUI, false);
+  }
 
 
-//<!-- POCISTI CEL SEMAFOR -->
-
- function semaforReset() {
-   let confirmAction = confirm("Are you sure to execute this action?");
-   if (confirmAction) {
-   frontend.document.getElementById('displayRezultatEkipa1').value = '0';
-   document.getElementById('bRezultatEkipa1').value = '0';
-   frontend.document.getElementById('displayRezultatEkipa2').value = '0';
-   document.getElementById('bRezultatEkipa2').value = '0';
-   document.getElementById('displayIgralca11').innerHTML = '';
-   frontend.document.getElementById('displayIgralca11').innerHTML = '';
-   document.getElementById('displayIgralca12').innerHTML = '';
-   frontend.document.getElementById('displayIgralca12').innerHTML = '';
-   document.getElementById('displayIgralca21').innerHTML = '';
-   frontend.document.getElementById('displayIgralca21').innerHTML = '';
-   document.getElementById('displayIgralca22').innerHTML = '';
-   frontend.document.getElementById('displayIgralca22').innerHTML = '';
-   document.getElementById('displayImeEkipe1').innerHTML = '';
-   frontend.document.getElementById('displayImeEkipe1').innerHTML = '';
-   document.getElementById('displayImeEkipe2').innerHTML = '';
-   frontend.document.getElementById('displayImeEkipe2').innerHTML = '';
-   // resets countdown
-   cdreset();
-   resetTimeoutEkipa1();
-   resetTimeoutEkipa2();
-
-     } else {
-         alert("Action canceled");
- }
-}
 </script> 
 <style>
 .tockePlusMinus {
@@ -232,7 +269,7 @@ function resetTimeoutEkipa2() {
 }
 
 .btnTimeout {
-  background-color: yellowgreen;
+  background-color: greenyellow;
 }
 
 .backendRezultat {
@@ -260,16 +297,16 @@ function resetTimeoutEkipa2() {
                       <h3>TOCKE:</h3>
                       <input class="backendRezultat" id=bRezultatEkipa1 style="border:none;width:50%;" type=number value=0 min=0 max=110>
                       <br>
-                      <button class="tockePlusMinus" onclick="increment1()">+</button>
-                      <button class="tockePlusMinus" onclick="decrement1()">-</button>
-                      <button style="float: right;" onclick="reset1()">Reset tock</button>
+                      <button class="tockePlusMinus" onclick="updatePoints(1, true)">+</button>
+                      <button class="tockePlusMinus" onclick="updatePoints(1, false)">-</button>
+                      <button style="float: right;" onclick="reset(1)">Reset tock</button>
                       <br><br><br>
                       
                       <!-- IME EKIPE CONTROL PANEL -->
                       <form id="vpisEkipa1">
                          <label>Ime Ekipe 1: </label><br>
                          <input type="text" id="imeEkipe1" required>
-                         <button type="button" onclick="vpisiEkipo1()">Vpisi</button>
+                         <button type="button" onclick="vpisiEkipo(1)">Vpisi</button>
                       <form>
                       <br><br>
                       
@@ -278,20 +315,20 @@ function resetTimeoutEkipa2() {
                       <form id="vpisIgralca11">
                          <label>Ime Igralca 1: </label><br>
                          <input type="text" id="imeIgralca11" required>
-                         <button type="button" onclick="vpisiIgralca11()">Vpisi</button>
+                         <button type="button" onclick="vpisiIgralca(1, 1)">Vpisi</button>
                       </form>
                       <div id="displayIgralca11"></div>
                       
                       <form id="vpisIgralca12">
                          <label>Ime Igralca 2: </label><br>
                          <input type="text" id="imeIgralca12" required>
-                         <button type="button" onclick="vpisiIgralca12()">Vpisi</button>
+                         <button type="button" onclick="vpisiIgralca(1, 2)">Vpisi</button>
                       </form>
                       <div id="displayIgralca12"></div>
                       <br>
-                      <button class="btnTimeout" id="btnEkipa1Timeout1" type="button" onclick="timeout1Ekipa1()">TIMEOUT 1</button>
-                      <button class="btnTimeout" id="btnEkipa1Timeout2" type="button" onclick="timeout2Ekipa1()">TIMEOUT 2</button>
-                      <button style="float: right;" type="button" onclick="resetTimeoutEkipa1()">Resetiraj Timeoute</button>
+                      <button class="btnTimeout" id="btnEkipa1Timeout1" type="button" onclick="timeoutEkipa(1, 1)">TIMEOUT 1</button>
+                      <button class="btnTimeout" id="btnEkipa1Timeout2" type="button" onclick="timeoutEkipa(1, 2)">TIMEOUT 2</button>
+                      <button style="float: right;" type="button" onclick="resetTimeoutEkipa(1)">Resetiraj Timeoute</button>
                       <hr></p>
                   </div>
                 </div>
@@ -304,16 +341,16 @@ function resetTimeoutEkipa2() {
                       <h3>TOCKE:</h3>
                       <input class="backendRezultat" id=bRezultatEkipa2 style="border:none;width:50%;" type=number value=0 min=0 max=110>
                       <br>
-                      <button class="tockePlusMinus" onclick="increment2()">+</button>
-                      <button class="tockePlusMinus" onclick="decrement2()">-</button>
-                      <button style="float: right;" onclick="reset2()">Reset tock</button>
+                      <button class="tockePlusMinus" onclick="updatePoints(2, true)">+</button>
+                      <button class="tockePlusMinus" onclick="updatePoints(2, false)">-</button>
+                      <button style="float: right;" onclick="reset(2)">Reset tock</button>
                       <br><br><br>
                       
                       <!-- IME EKIPE CONTROL PANEL -->
                       <form id="vpisEkipa2">
                          <label>Ime Ekipe 2: </label><br>
                          <input type="text" id="imeEkipe2" required>
-                         <button type="button" onclick="vpisiEkipo2()">Vpisi</button>
+                         <button type="button" onclick="vpisiEkipo(2)">Vpisi</button>
                        </form>
                        <div id="displayImeEkipe2"></div>
                       
@@ -323,20 +360,20 @@ function resetTimeoutEkipa2() {
                       <form id="vpisIgralca21">
                          <label>Ime Igralca 1: </label><br>
                          <input type="text" id="imeIgralca21" required>
-                         <button type="button" onclick="vpisiIgralca21()">Vpisi</button>
+                         <button type="button" onclick="vpisiIgralca(2, 1)">Vpisi</button>
                       </form>
                       <div id="displayIgralca21"></div>
                       
                       <form id="vpisIgralca22">
                          <label>Ime Igralca 2: </label><br>
                          <input type="text" id="imeIgralca22" required>
-                         <button type="button" onclick="vpisiIgralca22()">Vpisi</button>
+                         <button type="button" onclick="vpisiIgralca(2, 2)">Vpisi</button>
                       </form>
                       <div id="displayIgralca22"></div>
                       <br>
-                      <button class="btnTimeout" id="btnEkipa2Timeout1" type="button" onclick="timeout1Ekipa2()">TIMEOUT 1</button>
-                      <button class="btnTimeout" id="btnEkipa2Timeout2" type="button" onclick="timeout2Ekipa2()">TIMEOUT 2</button>
-                      <button style="float: right;" type="button" onclick="resetTimeoutEkipa2()">Resetiraj Timeoute</button>
+                      <button class="btnTimeout" id="btnEkipa2Timeout1" type="button" onclick="timeoutEkipa(2, 1)">TIMEOUT 1</button>
+                      <button class="btnTimeout" id="btnEkipa2Timeout2" type="button" onclick="timeoutEkipa(2, 2)">TIMEOUT 2</button>
+                      <button style="float: right;" type="button" onclick="resetTimeoutEkipa(2)">Resetiraj Timeoute</button>
                       <hr></p>
                   </div>
                 </div>
@@ -366,9 +403,24 @@ function resetTimeoutEkipa2() {
                     <p class="u-text u-text-default u-text-4">
                       <!-- OPEN SEMAFOR -->
                       <h3>Semafor</h3>
-                      <button onclick="frontend = window.open('frontend.html','height=200,width=200')"> ODPRI SEMAFOR </button>
+                      <button onclick="openScoreWindow()"> ODPRI SEMAFOR </button>
                       <button onclick="semaforReset()"> POČISTI SEMAFOR </button>
                       <br><br>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="u-size-30">
+              <div class="u-layout-row">
+                <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-3">
+                  <div class="u-container-layout u-container-layout-3">
+                    <p class="u-text u-text-default u-text-3">
+                      <!-- TIMER -->
+                      <h3>Shrani / nalozi</h3>
+                      <input type="button" value="Shrani" onclick="saveData()">
+                      <input type="button" value="Nalozi" onclick="loadData()">
+                      <input type="button" value="Izbrisi" onclick="deleteData()">
                     </p>
                   </div>
                 </div>
